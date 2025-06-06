@@ -27,7 +27,7 @@ namespace _02.Scripts.Manager
             }
         }
         
-        private void Awake()
+        protected virtual void Awake()
         {
             if (_instance == null)
             {
