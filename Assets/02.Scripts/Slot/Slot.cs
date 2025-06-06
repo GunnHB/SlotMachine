@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
+using _02.Scripts.Manager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,10 +10,12 @@ using DG.Tweening;
 
 namespace _02.Scripts.Slot
 {
+    
     public class Slot : MonoBehaviour
     {
+        private static readonly string Prefab_Name_SlotUnit = "SlotUnit";
+        
         [SerializeField] private SlotData _slotData = null;
-        [SerializeField] private SlotUnit _slotUnitPrefab = null;
         
         [SerializeField] private ScrollRect _scroll = null;
         [SerializeField] private UIButton _button = null;
@@ -32,21 +35,27 @@ namespace _02.Scripts.Slot
             }
         }
 
+        private void OnDestroy()
+        {
+            if(_button != null)
+                _button.onClick.RemoveAllListeners();
+        }
+
         private void SetupSlotUnit()
         {
-            if (_slotData == null || _slotUnitPrefab == null)
-                return;
-
-            foreach (var item in _slotData.TextureList)
-            {
-                SlotUnit unit = Instantiate(_slotUnitPrefab,  _scroll.content.transform);
-                if (unit != null)
-                {
-                    unit.SetupSlotUnit(item);
-                    
-                    _unitList.Add(unit);
-                }
-            }
+            // if (_slotData == null || _slotUnitPrefab == null)
+            //     return;
+            //
+            // foreach (var item in _slotData.TextureList)
+            // {
+            //     SlotUnit unit = Instantiate(_slotUnitPrefab,  _scroll.content.transform);
+            //     if (unit != null)
+            //     {
+            //         unit.SetupSlotUnit(item);
+            //         
+            //         _unitList.Add(unit);
+            //     }
+            // }
         }
 
         private void OnClickButton()
