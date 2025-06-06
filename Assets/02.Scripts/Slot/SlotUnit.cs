@@ -7,10 +7,16 @@ namespace _02.Scripts.Slot
     {
         [SerializeField] private RawImage _rawImage = null;
 
-        public void SetupSlotUnit(Texture2D texture)
+        private SlotData.SlotItem _currentSlotItem = null;
+        
+        public SlotData.SlotItem GetSlotItem() => _currentSlotItem;
+
+        public void SetSlotItem(SlotData.SlotItem item)
         {
+            _currentSlotItem = item;
+
             if (_rawImage != null)
-                _rawImage.texture = texture;
+                _rawImage.texture = item._itemTexture;
         }
     }
 }
