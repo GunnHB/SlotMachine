@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 using System.Collections.Generic;
@@ -8,21 +9,17 @@ namespace _02.Scripts.Manager
 {
     public class GameManager : Singleton<GameManager>
     {
-        private TMP_Dropdown _dropdown = null;
-        private List<Slot.Slot> _slotList = new List<Slot.Slot>();
+        [SerializeField] private TMP_Dropdown _dropdown = null;
+        [SerializeField] private List<Slot.Slot> _slotList = new List<Slot.Slot>();
 
-        public void SetupDropdown(TMP_Dropdown dropdown)
+        protected override void Awake()
         {
-            if (dropdown != null)
-                _dropdown = dropdown;
+            base.Awake();
+            
+            InitDropdown();
         }
 
-        public void SetupSlotList(List<Slot.Slot> slotList)
-        {
-            _slotList = slotList;
-        }
-
-        private void Start()
+        private void InitDropdown()
         {
             if (_dropdown == null)
                 return;
@@ -38,6 +35,11 @@ namespace _02.Scripts.Manager
             
             for (int index = 0; index < value + 1; ++index)
                 _slotList[index].gameObject.SetActive(true);
+        }
+
+        private void OnDestroy()
+        {
+            _dropdown.onValueChanged.RemoveAllListeners();
         }
     }
 }
