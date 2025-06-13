@@ -145,16 +145,28 @@ public abstract class RecyclableVerticalScrollView<T> : MonoBehaviour
         adjustedY -= _topOffset;
         item.RectTransform.localPosition = new Vector3(adjustedX, adjustedY, 0);
 
-        //Index가 입력된 DataList의 크기를 넘어가거나 0미만이면 슬롯을 끄고 Update를 진행하지 않는다.
-        if (index < 0 || index >= _dataList.Count)
+        // //Index가 입력된 DataList의 크기를 넘어가거나 0미만이면 슬롯을 끄고 Update를 진행하지 않는다.
+        // if (index < 0 || index >= _dataList.Count)
+        // {
+        //     item.gameObject.SetActive(false);
+        //     return;
+        // }
+        // else
+        // {
+        //     item.UpdateSlot(_dataList[index]);
+        //     item.gameObject.SetActive(true);
+        // }
+        
+        // 핵심 수정: 순환 인덱스 사용
+        if (_dataList.Count > 0)
         {
-            item.gameObject.SetActive(false);
-            return;
+            int wrappedIndex = ((index % _dataList.Count) + _dataList.Count) % _dataList.Count;
+            item.UpdateSlot(_dataList[wrappedIndex]);
+            item.gameObject.SetActive(true);
         }
         else
         {
-            item.UpdateSlot(_dataList[index]);
-            item.gameObject.SetActive(true);
+            item.gameObject.SetActive(false);
         }
     }
 }
