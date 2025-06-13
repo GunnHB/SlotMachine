@@ -10,7 +10,7 @@ namespace _02.Scripts.Manager
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private TMP_Dropdown _dropdown = null;
-        [SerializeField] private List<Slot.Slot> _slotList = new List<Slot.Slot>();
+        [SerializeField] private List<Slot.SlotMachine> _slotList = new List<Slot.SlotMachine>();
 
         protected override void Awake()
         {
