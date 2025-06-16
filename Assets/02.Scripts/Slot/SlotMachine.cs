@@ -220,13 +220,8 @@ namespace _02.Scripts.Slot
         private void ShowResultEffect()
         {
             // 결과 애니메이션
-            if (_button != null)
-            {
-                // 버튼 펄스 효과
-                _button.transform.DOPunchScale(Vector3.one * 0.3f, 0.6f, 10, 1);
-            }
-
-            // 추가 효과들...
+            _button.transform.DOPunchScale(Vector3.one * 0.1f, 0.3f, 10, 1);
+            _scrollRect.transform.DOPunchScale(Vector3.one * .1f, .3f, 10, 1);
         }
 
         private void ResetScrollPosition()
