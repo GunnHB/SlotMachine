@@ -12,7 +12,7 @@ namespace _02.Scripts.UI
 
         public TextMeshProUGUI Text => _text;
 
-        private void Awake()
+        protected override void Awake()
         {
             if (_text == null)
                 _text = GetComponentInChildren<TextMeshProUGUI>();
