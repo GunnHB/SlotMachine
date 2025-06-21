@@ -4,6 +4,7 @@ using _02.Scripts.Manager;
 using UnityEngine;
 using UnityEngine.UI;
 using _02.Scripts.UI;
+using DarkTonic.MasterAudio;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
@@ -11,23 +12,31 @@ namespace _02.Scripts.Slot
 {
     public class SlotMachine : RecyclableVerticalScrollView<SlotData.SlotItem>
     {
-        [Title("Data")] [SerializeField] private SlotData _slotData = null;
+        [Title("Data")] 
+        [SerializeField] private SlotData _slotData = null;
 
-        [Title("Spin Settings")] [SerializeField]
-        private float _normalSpinSpeed = 1000f; // 일반 스핀 속도
-
+        [Title("Spin Settings")] 
+        [SerializeField] private float _normalSpinSpeed = 1000f; // 일반 스핀 속도
         [SerializeField] private float _stopDistance = 3f; // 정지할 때 몇 칸 더 갈지 (슬롯 개수)
         [SerializeField] private float _stopDuration = 2f; // 정지 시간
         [SerializeField] private Ease _stopEase = Ease.OutQuart; // 정지 이징
 
-        [Title("UI")] [SerializeField] private UIButton _button = null;
+        [Title("UI")]
+        [SerializeField] private UIButton _button = null;
 
-        [Title("Debug")] [SerializeField] private int _dataRepeatCount = 50;
+        [Title("VFX")]
+        [SerializeField] private ParticleSystem _particle = null;
+
+        [Title("Debug")]
+        [SerializeField] private int _dataRepeatCount = 50;
+
+        private PlaySoundResult _spinningSound = null;
 
         private List<SlotData.SlotItem> _expandedItemList = new List<SlotData.SlotItem>();
 
         private bool _bIsSpinning = false;
         private bool _bIsStopping = false;
+        
         private Tween _spinTween = null;
 
         private void Start()
@@ -39,6 +48,8 @@ namespace _02.Scripts.Slot
                 _button.Text.SetText("START");
                 _button.onClick.AddListener(OnClickButton);
             }
+            
+            _particle.gameObject.SetActive(false);
         }
 
         private void OnDestroy()
@@ -83,6 +94,8 @@ namespace _02.Scripts.Slot
 
             _button.Text.SetText("STOP");
 
+            _spinningSound = MasterAudio.PlaySound("Spinning");
+
             ContinuousSpinLoop();
         }
 
@@ -118,6 +131,11 @@ namespace _02.Scripts.Slot
             _button.Text.SetText("STOPPING...");
 
             _spinTween?.Kill();
+
+            if(_spinningSound != null && _spinningSound.SoundPlayed)
+                _spinningSound.ActingVariation.Stop();
+            
+            MasterAudio.PlaySound("Result");
 
             // 간단한 방법: 현재 위치에서 몇 칸 더 가서 멈추기
             NaturalStopAnimation();
@@ -222,6 +240,13 @@ namespace _02.Scripts.Slot
             // 결과 애니메이션
             _button.transform.DOPunchScale(Vector3.one * 0.1f, 0.3f, 10, 1);
             _scrollRect.transform.DOPunchScale(Vector3.one * .1f, .3f, 10, 1);
+            
+            // 효과
+            _particle.gameObject.SetActive(true);
+
+            Sequence seq = DOTween.Sequence();
+            seq.SetDelay(2f)
+                .OnComplete(() => _particle.gameObject.SetActive(false));
         }
 
         private void ResetScrollPosition()
