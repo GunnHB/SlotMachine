@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using _02.Scripts.UI;
+using DarkTonic.MasterAudio;
 using UnityEngine.Serialization;
 
 namespace _02.Scripts.TimeBar
@@ -23,6 +24,10 @@ namespace _02.Scripts.TimeBar
         private float _currTime = 0f;
         private float _midTime = 0f;
         private bool _bIsTimerRunning = false;
+
+        private float _themePosition = 0f;
+
+        private PlaySoundResult _theme = null;
 
         private void Start()
         {
@@ -60,6 +65,10 @@ namespace _02.Scripts.TimeBar
 
             _timeCoroutine = StartCoroutine(TimerCoroutine());
             _bIsTimerRunning = true;
+
+            _theme = MasterAudio.PlaySound("TimebarTheme");
+            if (_theme != null)
+                _theme.ActingVariation.JumpToTime(_themePosition);
         }
 
         private void StopTimer()
@@ -71,6 +80,11 @@ namespace _02.Scripts.TimeBar
             }
 
             _bIsTimerRunning = false;
+
+            _themePosition = _theme.ActingVariation.VarAudio.time;
+            
+            MasterAudio.FadeOutAllOfSound("TimebarTheme", .5f);
+            _theme = null;
         }
 
         private IEnumerator TimerCoroutine()
@@ -87,13 +101,15 @@ namespace _02.Scripts.TimeBar
                yield return null;
             }
 
-            _currTime = 0f;
-            _progressBar.value = 0f;
-            _progressBarImage.color = _endColor;
+            StopTimer();
 
-            _bIsTimerRunning = false;
+            _currTime = _initialTime;
+            _progressBar.value = 1f;
+            _progressBarImage.color = _startColor;
             
-            _timeCoroutine = null;
+            _button.Text.SetText(Mathf.RoundToInt(_currTime).ToString());
+
+            _themePosition = 0f;
         }
 
         private void UpdateProgressBar()
