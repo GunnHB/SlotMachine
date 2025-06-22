@@ -19,6 +19,12 @@ namespace _02.Scripts.Manager
             InitDropdown();
         }
 
+        private void Update()
+        {
+            if(Input.GetKey(KeyCode.Escape))
+                Application.Quit();
+        }
+
         private void InitDropdown()
         {
             if (_dropdown == null)

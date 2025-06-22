@@ -1097,7 +1097,7 @@ MonoBehaviour:
   _progressBar: {fileID: 1163390604}
   _progressBarImage: {fileID: 237658103}
   _button: {fileID: 1716387496}
-  _initialTime: 5
+  _initialTime: 30
   _startColor: {r: 0, g: 1, b: 0, a: 1}
   _midColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _endColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1377,7 +1377,7 @@ MonoBehaviour:
   groupPlayType: 0
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 0.3548134
+  groupMasterVolume: 0.28840312
   retriggerPercentage: 100
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -1709,7 +1709,7 @@ MonoBehaviour:
   groupPlayType: 0
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 0.3548134
+  groupMasterVolume: 0.28840312
   retriggerPercentage: 100
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -1756,7 +1756,7 @@ MonoBehaviour:
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
   willCleanUpDelegatesAfterStop: 1
-  frames: 5338
+  frames: 5364
 --- !u!1 &1122375904
 GameObject:
   m_ObjectHideFlags: 0
