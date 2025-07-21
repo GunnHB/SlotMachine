@@ -131,7 +131,13 @@ public abstract class RecyclableVerticalScrollView<T> : MonoBehaviour
     protected void UpdateSlot(UIRecyclableScrollSlot<T> item, int index)
     {
         //현재 Index의 행과 열을 계산
-        int row = 0 <= index ? index / _itemsPerRow : (index - 1) / _itemsPerRow;
+        // int row = 0 <= index ? index / _itemsPerRow : (index - 1) / _itemsPerRow;
+        // int row = 0;
+        // if (index >= 0)
+        //     row = index / _itemsPerRow;
+        // else
+        //     row = (index - 1) / _itemsPerRow;
+        int row = index / _itemsPerRow;
         int column = Mathf.Abs(index) % _itemsPerRow;
 
         // X축 및 Y축 위치 계산 (가로를 기준으로 중앙 정렬 및 피벗 보정)
@@ -142,7 +148,7 @@ public abstract class RecyclableVerticalScrollView<T> : MonoBehaviour
         float adjustedY = -(row * (_itemHeight + _spacing)) - _itemHeight * (1 - pivot.y);
         float adjustedX = column * (_itemWidth + _spacing) + _itemWidth * pivot.x;
         adjustedX += offsetX + _horizontalOffset;
-        adjustedY -= _topOffset;
+        adjustedY -= (_topOffset + 85f);
         item.RectTransform.localPosition = new Vector3(adjustedX, adjustedY, 0);
 
         // //Index가 입력된 DataList의 크기를 넘어가거나 0미만이면 슬롯을 끄고 Update를 진행하지 않는다.
