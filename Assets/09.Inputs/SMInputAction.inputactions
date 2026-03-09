@@ -1,0 +1,34 @@
+{
+    "name": "SMInputAction",
+    "maps": [
+        {
+            "name": "SlotMachine",
+            "id": "237815b2-b7bc-4cf6-96b3-088da394ec87",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "2ed7bdbc-d35e-47c8-a6c4-4d77ecf97871",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f1f584f5-9641-49e3-8582-7a782869809a",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

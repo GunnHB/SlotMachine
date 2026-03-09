@@ -1,9 +1,13 @@
 using System;
-using UnityEngine;
-
 using System.Collections.Generic;
 
+using UnityEngine;
+
+using _02.Scripts.UI;
+
 using TMPro;
+
+using DG.Tweening;
 
 namespace _02.Scripts.Manager
 {
@@ -11,6 +15,9 @@ namespace _02.Scripts.Manager
     {
         [SerializeField] private TMP_Dropdown _dropdown = null;
         [SerializeField] private List<Slot.SlotMachine> _slotList = new List<Slot.SlotMachine>();
+        [SerializeField] private UIEscapePanel _escapePanel = null;
+
+        private bool _activatedPanel = false;
 
         protected override void Awake()
         {
@@ -19,10 +26,10 @@ namespace _02.Scripts.Manager
             InitDropdown();
         }
 
-        private void Update()
+        private void Start()
         {
-            if(Input.GetKey(KeyCode.Escape))
-                Application.Quit();
+            if (_escapePanel != null)
+                _escapePanel.OnRequestClosePanel += CloseEscapePanel;
         }
 
         private void InitDropdown()
@@ -46,6 +53,44 @@ namespace _02.Scripts.Manager
         private void OnDestroy()
         {
             _dropdown.onValueChanged.RemoveAllListeners();
+        }
+
+        private void OnEscape()
+        {
+            if (_escapePanel == null)
+                return;
+
+            if (_activatedPanel == true)
+            {
+                _escapePanel.OnRequestClosePanel?.Invoke();
+                return;
+            }
+
+            Sequence sequence = DOTween.Sequence()
+                .OnStart(() =>
+                {
+                    _activatedPanel = true;
+                    
+                    _escapePanel.Popup.transform.localScale = Vector3.zero;
+                    _escapePanel.Popup.GetComponent<CanvasGroup>().alpha = 0;
+
+                    _escapePanel.gameObject.SetActive(true);
+                })
+                .Append(_escapePanel.Popup.transform.DOScale(1f, .15f).SetEase(Ease.OutBounce))
+                .Join(_escapePanel.Popup.GetComponent<CanvasGroup>().DOFade(1f, .15f));
+        }
+
+        private void CloseEscapePanel()
+        {
+            Sequence sequence = DOTween.Sequence()
+                .Append(_escapePanel.Popup.transform.DOScale(0f, .15f).SetEase(Ease.InBounce))
+                .Join(_escapePanel.Popup.GetComponent<CanvasGroup>().DOFade(0f, .15f))
+                .OnComplete(() =>
+                {
+                    _escapePanel.gameObject.SetActive(false);
+                    
+                    _activatedPanel = false;
+                });
         }
     }
 }
